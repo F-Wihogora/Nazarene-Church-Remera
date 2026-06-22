@@ -4,8 +4,9 @@ import { useAuth } from '../context/AuthContext';
 import { useLanguage } from '../context/LanguageContext';
 import { 
   LayoutDashboard, Users, Music, Calendar, DollarSign, 
-  Settings, LogOut, Menu, X, Globe, UserCheck, ShieldAlert 
+  LogOut, Menu, X, Globe, UserCheck 
 } from 'lucide-react';
+import Logo from './Logo';
 
 const AdminLayout = () => {
   const { user, logout } = useAuth();
@@ -50,9 +51,7 @@ const AdminLayout = () => {
         {/* Brand header */}
         <div className="h-16 flex items-center justify-between px-4 border-b border-church-navy border-opacity-30 bg-church-dark">
           <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center border-2 border-church-navy">
-              <span className="text-church-navy font-bold text-xs">CN</span>
-            </div>
+            <Logo className="w-8 h-8 text-white" />
             <div>
               <span className="font-bold text-sm tracking-tight text-white block">NCR-DE Portal</span>
               <span className="text-[10px] text-gray-300 block">{t('motto')}</span>
@@ -77,14 +76,14 @@ const AdminLayout = () => {
                 to={item.path}
                 onClick={() => setSidebarOpen(false)}
                 className={`
-                  flex items-center space-x-3 px-3 py-2.5 rounded-md text-sm font-medium transition-colors
+                  flex items-center space-x-3 px-3 py-2.5 rounded-md text-xs font-semibold uppercase tracking-wider transition-colors
                   ${isActive 
                     ? 'bg-church-blue text-white shadow-md' 
                     : 'text-gray-300 hover:bg-church-navy hover:text-white'
                   }
                 `}
               >
-                <Icon size={18} />
+                <Icon size={16} />
                 <span>{item.name}</span>
               </Link>
             );
