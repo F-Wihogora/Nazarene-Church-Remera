@@ -3,39 +3,13 @@ param(
     [string[]]$MavenArgs
 )
 
-$MavenVersion = "3.9.6"
-$MavenDirName = "apache-maven-$MavenVersion"
-$TargetDir = Join-Path $Home ".m2\portable-maven"
-$MavenHome = Join-Path $TargetDir $MavenDirName
-$MvnPath = Join-Path $MavenHome "bin\mvn.cmd"
-$ZipPath = Join-Path $TargetDir "maven.zip"
+# Use the pre-installed Maven binary found on the system
+$MvnPath = "C:\Users\HP\.m2\wrapper\dists\apache-maven-3.9.14-bin\1cb7fhup6b5n3bed6kckbrnspv\apache-maven-3.9.14\bin\mvn.cmd"
 
 if (-not (Test-Path $MvnPath)) {
-    Write-Host "Portable Maven not found. Downloading Maven $MavenVersion..." -ForegroundColor Cyan
-    if (-not (Test-Path $TargetDir)) {
-        New-Item -ItemType Directory -Path $TargetDir -Force | Out-Null
-    }
-    
-    $Url = "https://archive.apache.org/dist/maven/maven-3/$MavenVersion/binaries/apache-maven-$MavenVersion-bin.zip"
-    Write-Host "Downloading using native curl.exe from $Url..." -ForegroundColor Gray
-    
-    # Run native curl to download the zip
-    & curl.exe -L -o $ZipPath $Url
-    
-    if (-not (Test-Path $ZipPath)) {
-        Write-Error "Failed to download Maven archive."
-        exit 1
-    }
-
-    Write-Host "Extracting archive to $TargetDir..." -ForegroundColor Gray
-    # Use PowerShell's Expand-Archive
-    Expand-Archive -Path $ZipPath -DestinationPath $TargetDir -Force
-    
-    # Clean up zip
-    Remove-Item -Path $ZipPath -Force
-    Write-Host "Maven installed successfully at $MavenHome" -ForegroundColor Green
+    # Fallback to IntelliJ Maven if wrapper isn't found
+    $MvnPath = "C:\Program Files\JetBrains\IntelliJ IDEA 2025.3.1\plugins\maven\lib\maven3\bin\mvn.cmd"
 }
 
-# Run maven
 Write-Host "Running Maven: mvn $MavenArgs" -ForegroundColor Cyan
 & $MvnPath @MavenArgs

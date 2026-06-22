@@ -1,0 +1,44 @@
+# Task List: Nazarene Church Remera Digital Ecosystem (NCR-DE)
+
+- `[x]` **Phase 1: Project Scaffolding & Setup**
+  - `[x]` Create backend directory structure & `pom.xml` with dependencies
+  - `[x]` Create frontend Vite+React structure with Tailwind CSS v3.4 configuration
+  - `[x]` Write base PWA manifest and service worker configs
+  - `[x]` Write unified `docker-compose.yml` and Dockerfiles
+- `[x]` **Phase 2: Backend Architecture & Core Layers**
+  - `[x]` BaseEntity setup (Auditing, Versioning, Soft-delete)
+  - `[x]` Security & Auth (JWT & Refresh Token Rotation, CustomUserDetailsService)
+  - `[x]` Integration Providers (StorageProvider, NotificationProvider)
+  - `[x]` Workflow state transition engine
+  - `[x]` Internationalization (properties files for EN, RW, FR)
+  - `[x]` Global Search & Backup/Restore utilities
+  - `[x]` Spring Scheduling & WebSockets configs
+- `[x]` **Phase 3: Database JPA Entities & Mappings**
+  - `[x]` User, Role, RefreshToken entities
+  - `[x]` Member, Family entities
+  - `[x]` VolunteerAssignment, CellGroup, CellMeeting entities
+  - `[x]` Course, Chapter, Quiz, Enrollment, Certificate entities
+  - `[x]` Event, RecurrenceRule, Registration, Ticket entities
+  - `[x]` FinanceRecord, Asset, InventoryTransaction entities
+  - `[x]` Sacraments (Baptism, Marriage), Testimonies, PrayerRequests entities
+  - `[x]` Workflow, AuditLog, FeatureFlag, Settings entities
+- `[x]` **Phase 4: Backend REST Controller & Service Layers**
+  - `[x]` Auth and registration APIs (with verification & password reset support)
+  - `[x]` Member Management CRUD endpoints (with filters, specs)
+  - `[x]` Worship & Service Planning CRUD endpoints
+  - `[x]` Core APIs: Departments, Events, Attendance, Finance, PrayerRequests, Documents, Analytics
+  - `[x]` Database backup/restore & Global search endpoints
+- `[x]` **Phase 5: Frontend Single Page Application Development**
+  - `[x]` Security contexts (Session state, Axios interceptors, protected routing)
+  - `[x]` Language and Theme context (Light/Dark themes, EN/RW/FR dictionary)
+  - `[x]` Public website (Home, About, Services, Sermons, Register/Join Us)
+  - `[x]` Admin dashboard layouts & interactive widgets
+  - `[x]` Member portal (Directory, Register Form, Profile & Family Linking)
+  - `[x]` Service planner interface & unified church calendar
+  - `[x]` Finance tracker, QR scanning, and event attendance scanner view
+- `[x]` **Phase 6: Data Seeding, Verification & Walkthrough**
+  - `[x]` Write `data.sql` database seeder
+  - `[x]` Build and run backend integration compile verification
+  - `[x]` Build frontend production packaging verification
+  - `[x]` Run docker-compose check
+  - `[x]` Generate `walkthrough.md` with walkthrough and verification details
