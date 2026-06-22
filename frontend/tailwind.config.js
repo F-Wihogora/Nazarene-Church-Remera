@@ -9,12 +9,12 @@ export default {
     extend: {
       colors: {
         church: {
-          dark: '#050D1A',      // Near black dark blue
-          navy: '#0F2C59',      // Core logo dark blue
-          blue: '#1C5BBA',      // Accent medium blue
-          soft: '#F4F7FC',      // Creamy white/blue background
-          charcoal: '#1A1D20',  // Muted black text
-          gray: '#E2E8F0',      // Border gray
+          dark: '#00122B',      // Solid deep black-blue
+          navy: '#002855',      // Official Nazarene deep navy
+          blue: '#005A9C',      // Official Nazarene accent blue
+          soft: '#F8FAFC',      // Soft clean background
+          charcoal: '#0F172A',  // Slate black text
+          gray: '#E2E8F0',      // Light border gray
         }
       },
       fontFamily: {

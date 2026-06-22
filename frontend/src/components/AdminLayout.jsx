@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { useLanguage } from '../context/LanguageContext';
 import { 
   LayoutDashboard, Users, Music, Calendar, DollarSign, 
-  LogOut, Menu, X, Globe, UserCheck 
+  LogOut, Menu, X, Globe, UserCheck, Heart 
 } from 'lucide-react';
 import Logo from './Logo';
 
@@ -25,6 +25,8 @@ const AdminLayout = () => {
     { name: t('members'), path: '/admin/members', icon: Users },
     { name: t('worshipPlan'), path: '/admin/worship', icon: Music },
     { name: t('events'), path: '/admin/events', icon: Calendar },
+    { name: "Visitors", path: '/admin/visitors', icon: UserCheck },
+    { name: "Prayers", path: '/admin/prayers', icon: Heart },
     { name: t('finances'), path: '/admin/finances', icon: DollarSign },
   ];
 

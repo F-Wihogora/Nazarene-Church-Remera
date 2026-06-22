@@ -4,7 +4,8 @@ import { AuthProvider } from './context/AuthContext';
 import { LanguageProvider } from './context/LanguageContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import PublicLayout from './components/PublicLayout';
-import AdminLayout from './components/AdminLayout';
+import api from './services/api';
+
 
 // Pages
 import Home from './pages/Home';
@@ -12,6 +13,10 @@ import Login from './pages/Login';
 import Forbidden from './pages/Forbidden';
 import MemberManagement from './pages/MemberManagement';
 import WorshipPlanner from './pages/WorshipPlanner';
+import AdminEvents from './pages/AdminEvents';
+import AdminFinances from './pages/AdminFinances';
+import VisitorManagement from './pages/VisitorManagement';
+import PrayerRequests from './pages/PrayerRequests';
 
 // Stub pages to prevent routing errors
 const About = () => (
@@ -97,43 +102,66 @@ const JoinUs = () => (
 );
 
 // Admin Pages
-const AdminDashboard = () => (
-  <div className="space-y-6">
-    <h2 className="text-xl font-bold text-church-navy border-b pb-2">Dashboard Incamake</h2>
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-      <div className="bg-white p-6 rounded-lg border border-church-gray shadow-sm flex flex-col justify-between">
-        <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">Total Members</span>
-        <span className="text-2xl font-black text-church-navy mt-2">124</span>
-      </div>
-      <div className="bg-white p-6 rounded-lg border border-church-gray shadow-sm flex flex-col justify-between">
-        <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">Active Stream</span>
-        <span className="text-2xl font-black text-green-600 mt-2">Live</span>
-      </div>
-      <div className="bg-white p-6 rounded-lg border border-church-gray shadow-sm flex flex-col justify-between">
-        <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">Prayer Requests</span>
-        <span className="text-2xl font-black text-church-navy mt-2">12 Pending</span>
-      </div>
-      <div className="bg-white p-6 rounded-lg border border-church-gray shadow-sm flex flex-col justify-between">
-        <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">Offering This Month</span>
-        <span className="text-2xl font-black text-church-navy mt-2">850,000 RWF</span>
+const AdminDashboard = () => {
+  const [stats, setStats] = React.useState({ members: 0, prayers: 0, visitors: 0, offerings: 0 });
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const [mRes, pRes, vRes, fRes] = await Promise.all([
+          api.get('/api/members'),
+          api.get('/api/admin/prayers'),
+          api.get('/api/admin/visitors'),
+          api.get('/api/admin/finances')
+        ]);
+        
+        const pendingPrayers = pRes.data.filter(p => p.status === 'PENDING').length;
+        const totalOfferings = fRes.data
+          .filter(f => f.recordType === 'INCOME' && f.category === 'OFFERING')
+          .reduce((sum, f) => sum + f.amount, 0);
+
+        setStats({
+          members: mRes.data.length,
+          prayers: pendingPrayers,
+          visitors: vRes.data.length,
+          offerings: totalOfferings
+        });
+      } catch (e) {
+        console.error("Failed to load dashboard stats", e);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchStats();
+  }, []);
+
+  return (
+    <div className="space-y-6">
+      <h2 className="text-xl font-bold text-church-navy border-b pb-2 font-sans tracking-wide">Dashboard Incamake</h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="bg-white p-6 rounded-xl border border-church-gray shadow-sm flex flex-col justify-between">
+          <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">Total Members</span>
+          <span className="text-2xl font-black text-church-navy mt-2">{loading ? '...' : stats.members}</span>
+        </div>
+        <div className="bg-white p-6 rounded-xl border border-church-gray shadow-sm flex flex-col justify-between">
+          <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">Pending Prayers</span>
+          <span className="text-2xl font-black text-amber-600 mt-2">{loading ? '...' : `${stats.prayers} Request(s)`}</span>
+        </div>
+        <div className="bg-white p-6 rounded-xl border border-church-gray shadow-sm flex flex-col justify-between">
+          <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">Registered Visitors</span>
+          <span className="text-2xl font-black text-church-blue mt-2">{loading ? '...' : stats.visitors}</span>
+        </div>
+        <div className="bg-white p-6 rounded-xl border border-church-gray shadow-sm flex flex-col justify-between">
+          <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">Total Offerings</span>
+          <span className="text-2xl font-black text-green-600 mt-2">{loading ? '...' : `${stats.offerings.toLocaleString()} RWF`}</span>
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
-const AdminEvents = () => (
-  <div className="space-y-6">
-    <h2 className="text-xl font-bold text-church-navy border-b pb-2">Event Schedules</h2>
-    <p className="text-sm text-gray-600">Create services, overnight prayers, or youth programs.</p>
-  </div>
-);
 
-const AdminFinances = () => (
-  <div className="space-y-6">
-    <h2 className="text-xl font-bold text-church-navy border-b pb-2">Finance Management</h2>
-    <p className="text-sm text-gray-600">Log tithes, offerings, donations, and expense requests.</p>
-  </div>
-);
 
 function App() {
   return (
@@ -162,6 +190,8 @@ function App() {
               <Route path="members" element={<MemberManagement />} />
               <Route path="worship" element={<WorshipPlanner />} />
               <Route path="events" element={<AdminEvents />} />
+              <Route path="visitors" element={<VisitorManagement />} />
+              <Route path="prayers" element={<PrayerRequests />} />
               <Route path="finances" element={<AdminFinances />} />
             </Route>
 

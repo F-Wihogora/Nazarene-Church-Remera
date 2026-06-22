@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -37,6 +38,9 @@ public class DatabaseInitializer implements CommandLineRunner {
     private CellGroupRepository cellGroupRepository;
 
     @Autowired
+    private DepartmentRepository departmentRepository;
+
+    @Autowired
     private SystemSettingRepository systemSettingRepository;
 
     @Autowired
@@ -46,6 +50,7 @@ public class DatabaseInitializer implements CommandLineRunner {
     private PasswordEncoder passwordEncoder;
 
     @Override
+    @Transactional
     public void run(String... args) throws Exception {
         logger.info("Initializing database with Nazarene Remera seed data...");
 
@@ -183,6 +188,32 @@ public class DatabaseInitializer implements CommandLineRunner {
             CellGroup group1 = new CellGroup("Remera Central Cell", "Sector Remera, Cell Rukiri II", leader, remeraCampus);
             cellGroupRepository.save(group1);
             logger.info("Seeded default cell groups");
+        }
+
+        // 12. Seed Departments
+        if (departmentRepository.count() == 0) {
+            Member floribert = memberRepository.findByEmail("f.wihogora@nazarene.org").orElse(null);
+            Member alice = memberRepository.findByEmail("alice.mutoni@nazarene.org").orElse(null);
+            Member sisterMutoni = memberRepository.findByEmail("s.mutoni@nazarene.org").orElse(null);
+            Member jean = memberRepository.findByEmail("jean.kabera@nazarene.org").orElse(null);
+
+            Department ushers = new Department("Ushers Department", "Welcoming members and guest seating services.");
+            ushers.setLeader(alice);
+            departmentRepository.save(ushers);
+
+            Department media = new Department("Media & Technology", "Sound engineering, livestream, projection and social media management.");
+            media.setLeader(floribert);
+            departmentRepository.save(media);
+
+            Department worship = new Department("Worship Choir", "Leading the congregation in praise and adoration.");
+            worship.setLeader(sisterMutoni);
+            departmentRepository.save(worship);
+
+            Department youth = new Department("Youth Fellowship (NYI)", "Spiritual growth and engagement programs for youths.");
+            youth.setLeader(jean);
+            departmentRepository.save(youth);
+
+            logger.info("Seeded default departments with leaders");
         }
 
         logger.info("Database seeding completed.");

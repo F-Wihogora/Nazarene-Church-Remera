@@ -37,10 +37,10 @@ const Login = () => {
   };
 
   const testAccounts = [
-    { name: "Rev. Jean Kabera (Pastor)", user: "jean_kabera" },
-    { name: "Pastor Alice Mutoni (Secretary)", user: "alice_mutoni" },
-    { name: "Pastor Floribert Wihogora (Admin/Pastor)", user: "floribert_wihogora" },
-    { name: "Sister Mutoni (Youth/Choir)", user: "sister_mutoni" }
+    { name: "Rev. Jean Kabera", title: "Senior Pastor", user: "jean_kabera", img: "/pastors/jean_kabera.png" },
+    { name: "Pastor Alice Mutoni", title: "Church Secretary", user: "alice_mutoni", img: "/pastors/alice_mutoni.png" },
+    { name: "Pastor Floribert Wihogora", title: "Admin & Pastor", user: "floribert_wihogora", img: "/pastors/floribert_wihogora.png" },
+    { name: "Sister Mutoni", title: "Youth Leader & Choir", user: "sister_mutoni", img: "/pastors/sister_mutoni.png" }
   ];
 
   return (
@@ -118,15 +118,26 @@ const Login = () => {
         <p className="text-[11px] text-gray-500">
           Click any leader profile to automatically populate credentials and test their specific authorization views:
         </p>
-        <div className="space-y-2">
+        <div className="space-y-2.5">
           {testAccounts.map((acc) => (
             <button
               key={acc.user}
+              type="button"
               onClick={() => selectAccount(acc.user)}
-              className="w-full text-left p-3 rounded border border-church-gray hover:border-church-blue hover:bg-blue-50 hover:bg-opacity-30 transition-all text-xs font-medium text-church-navy flex items-center justify-between"
+              className="w-full text-left p-2.5 rounded-lg border border-church-gray hover:border-church-blue hover:bg-slate-50 transition-all text-xs text-church-navy flex items-center gap-3 shadow-sm hover:shadow-md"
             >
-              <span>{acc.name}</span>
-              <span className="text-[10px] text-gray-400 font-mono">{acc.user}</span>
+              <img 
+                src={acc.img} 
+                alt={acc.name} 
+                className="w-10 h-10 rounded-full object-cover border border-church-gray flex-shrink-0"
+              />
+              <div className="flex-grow min-w-0">
+                <div className="font-bold truncate text-[12px]">{acc.name}</div>
+                <div className="text-[10px] text-gray-500 font-medium truncate">{acc.title}</div>
+              </div>
+              <span className="text-[9px] text-church-blue font-mono bg-blue-50 px-2 py-0.5 rounded border border-blue-100 flex-shrink-0">
+                {acc.user}
+              </span>
             </button>
           ))}
         </div>

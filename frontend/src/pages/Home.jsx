@@ -19,6 +19,13 @@ const Home = () => {
     { title: "NMI (Missions)", desc: "Spreading the gospel globally and locally through outreach and trips.", icon: Users }
   ];
 
+  const pastors = [
+    { name: "Rev. Jean Kabera", role: "Senior Pastor", img: "/pastors/jean_kabera.png", desc: "Leading the congregation with theological depth and pastoral care." },
+    { name: "Pastor Alice Mutoni", role: "Church Secretary", img: "/pastors/alice_mutoni.png", desc: "Managing church records, administrative functions, and visitor outreach." },
+    { name: "Pastor Floribert Wihogora", role: "Admin & Pastor", img: "/pastors/floribert_wihogora.png", desc: "Directing technology, cell groups, and church operations." },
+    { name: "Sister Mutoni", role: "Youth & Choir Leader", img: "/pastors/sister_mutoni.png", desc: "Guiding the youth fellowships and leading the choir team." }
+  ];
+
   return (
     <div className="space-y-16 pb-16">
       {/* Hero Section */}
@@ -129,6 +136,37 @@ const Home = () => {
               );
             })}
           </div>
+        </div>
+      </section>
+
+      {/* Pastors & Leaders Section */}
+      <section className="max-w-5xl mx-auto px-4">
+        <div className="text-center space-y-3 mb-10">
+          <h2 className="text-2xl md:text-3xl font-extrabold text-church-navy">Meet Our Pastors & Leaders</h2>
+          <p className="text-sm text-gray-600 max-w-lg mx-auto">
+            The dedicated shepherding team guiding our community in holiness, faith, and administrative excellence.
+          </p>
+        </div>
+        
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {pastors.map((p) => (
+            <div key={p.name} className="bg-white rounded-xl border border-church-gray overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col">
+              <div className="aspect-[3/4] overflow-hidden bg-slate-100 relative">
+                <img 
+                  src={p.img} 
+                  alt={p.name} 
+                  className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                />
+              </div>
+              <div className="p-4 flex-grow flex flex-col justify-between">
+                <div>
+                  <h3 className="text-sm font-bold text-church-navy">{p.name}</h3>
+                  <span className="text-[11px] font-semibold text-church-blue block mt-0.5">{p.role}</span>
+                  <p className="text-[11px] text-gray-500 mt-2 leading-relaxed">{p.desc}</p>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
     </div>
