@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: ncrde_postgres_db
+    environment:
+      POSTGRES_USER: ncrde_user
+      POSTGRES_PASSWORD: ncrde_password
+      POSTGRES_DB: ncrde_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: ncrde_backend_app
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/ncrde_db
+      SPRING_DATASOURCE_USERNAME: ncrde_user
+      SPRING_DATASOURCE_PASSWORD: ncrde_password
+    volumes:
+      - ./uploads:/app/uploads
+    depends_on:
+      - db
+    restart: always
+
+volumes:
+  postgres_data:
