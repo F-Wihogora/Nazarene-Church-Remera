@@ -1,0 +1,29 @@
+# Java build output
+**/target/
+*.class
+
+# Node/React dependencies
+**/node_modules/
+**/dist/
+
+# IDE settings
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Environment and logs
+*.log
+.env
+.env.local
+.env.production
+.env.development
+
+# Uploads directory contents (we keep the directory but ignore files if needed; actually, we can track uploads folder structure but ignore uploaded files)
+uploads/*
+!uploads/.gitkeep

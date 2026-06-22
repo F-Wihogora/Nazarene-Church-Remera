@@ -1,0 +1,73 @@
+server:
+  port: 8080
+  error:
+    include-message: always
+
+spring:
+  application:
+    name: ncrde-church-ecosystem
+  
+  # Default datasource is H2 for immediate, zero-config running
+  datasource:
+    url: jdbc:h2:mem:ncrdedb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: password
+  
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      settings:
+        web-allow-others: true
+  
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+  
+  servlet:
+    multipart:
+      max-file-size: 15MB
+      max-request-size: 15MB
+
+  messages:
+    basename: messages
+    encoding: UTF-8
+
+# Configuration for Actuator endpoints
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, metrics, env
+  endpoint:
+    health:
+      show-details: always
+
+# JWT configuration defaults
+ncrde:
+  app:
+    jwtSecret: NkwNjRkMGEzMzZkNGFiNmIxYjMyOGM1NjMyNzFiNDVhYmMyM2Q5ZWY2YjU4Y2Q0ZTc0YTE2Nzg5MDEyMzQ1Njc=
+    jwtExpirationMs: 900000 # 15 minutes (in milliseconds)
+    jwtRefreshTokenExpirationMs: 604800000 # 7 days (in milliseconds)
+
+---
+# Production Profile using PostgreSQL
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    url: jdbc:postgresql://db:5432/ncrde_db
+    driver-class-name: org.postgresql.Driver
+    username: ncrde_user
+    password: ncrde_password
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
